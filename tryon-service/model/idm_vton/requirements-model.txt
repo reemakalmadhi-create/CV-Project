@@ -1,0 +1,4 @@
+# Heavy model dependencies — intentionally EMPTY for now.
+# Fill this in when the official IDM-VTON files are provided, then run:
+#   pip install -r model/idm_vton/requirements-model.txt
+# (Do not add these to the top-level requirements.txt — the website must run without them.)
