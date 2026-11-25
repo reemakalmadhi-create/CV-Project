@@ -1,35 +1,37 @@
 """
-FITTED try-on service — a small FastAPI app around model/idm_vton.
+FITTED try-on service: FastAPI around our CatVTON (pretrained, attention fine-tuned by our team).
 
 The Next.js site calls it through TRYON_API_URL:
   GET  /health  -> {"ready": bool, "status": str}
-  POST /tryon   (multipart: person, garment_url, garment_id, category, description)
-                -> {"status": "ok", "image_base64": "..."}       (real IDM-VTON output only)
-                 | {"status": "pending", "message": "...", "detail": "..."}
+  POST /tryon   multipart: person (file), garment (file) OR garment_url, garment_id, category, description
+                -> {"status": "ok", "image_base64": "..."}       (real model output only)
+                 | {"status": "pending", "message": "...", "detail": "..."}   (model still loading)
                  | {"status": "error", "message": "...", "detail": "..."}
 
-Until the IDM-VTON files are added and INTEGRATED = True in model/idm_vton/pipeline.py,
-/tryon always answers "pending". It never returns the input photo or a placeholder.
-
-Run:  uvicorn main:app --port 8000      (needs: pip install -r requirements.txt)
+Run (from this folder, in the Python env that has torch + diffusers):
+  CATVTON_ATTN=~/virtual-tryon/run_catvton/ft/attention_final.safetensors uvicorn main:app --port 8000
 """
-
 from __future__ import annotations
 
 import base64
 import io
+import threading
+import time
 import urllib.request
 
 from fastapi import FastAPI, File, Form, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from PIL import Image
 
-from model.idm_vton import GarmentCategory, IDMVTONNotIntegratedError, TryOnRequest, get_pipeline
+from catvton_engine import Engine
 
-app = FastAPI(title="FITTED try-on service")
+app = FastAPI(title="FITTED try-on service (CatVTON)")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
-PENDING = IDMVTONNotIntegratedError.USER_MESSAGE
+engine = Engine()
+threading.Thread(target=engine.load, daemon=True).start()   # /health answers while the model loads
+PENDING = "Try-on model is still loading. Please try again in a minute."
+TOPS_ONLY = "This model is trained on tops (VITON-HD). Pick the upper-body category."
 
 
 def _download(url: str) -> Image.Image:
@@ -42,35 +44,35 @@ def _download(url: str) -> Image.Image:
 
 @app.get("/health")
 def health() -> dict:
-    pipe = get_pipeline()
-    return {"ready": pipe.is_available(), "status": pipe.status()}
+    return {"ready": engine.ready(), "status": engine.status()}
 
 
 @app.post("/tryon")
-async def tryon(
+def tryon(
     person: UploadFile = File(...),
-    garment_url: str = Form(...),
+    garment: UploadFile | None = File(None),
+    garment_url: str = Form(""),
     garment_id: str = Form(""),
     category: str = Form("upper_body"),
     description: str = Form(""),
 ) -> dict:
-    pipe = get_pipeline()
-    if not pipe.is_available():
-        return {"status": "pending", "message": PENDING, "detail": pipe.status()}
+    if not engine.ready():
+        return {"status": "pending", "message": PENDING, "detail": engine.status()}
+    if category != "upper_body":
+        return {"status": "error", "message": TOPS_ONLY, "detail": f"category={category}"}
     try:
-        person_img = Image.open(io.BytesIO(await person.read())).convert("RGB")
-        garment_img = _download(garment_url).convert("RGB")
-        result = pipe.run(TryOnRequest(
-            person_image=person_img,
-            garment_image=garment_img,
-            garment_description=description,
-            category=GarmentCategory(category),
-            garment_id=garment_id or None,
-        ))
-    except IDMVTONNotIntegratedError as exc:
-        return {"status": "pending", "message": PENDING, "detail": exc.detail}
+        person_img = Image.open(io.BytesIO(person.file.read()))
+        if garment is not None:
+            garment_img = Image.open(io.BytesIO(garment.file.read()))
+        elif garment_url:
+            garment_img = _download(garment_url)
+        else:
+            return {"status": "error", "message": "Please choose a garment.", "detail": "no garment"}
+        t = time.time()
+        result, _ = engine.run(person_img, garment_img)
+        print(f"try-on {garment_id or 'upload'} in {time.time() - t:.0f}s", flush=True)
     except Exception as exc:  # model errors must not crash the service
-        return {"status": "error", "message": "Try-on failed.", "detail": str(exc)}
+        return {"status": "error", "message": "Try-on failed.", "detail": f"{type(exc).__name__}: {exc}"}
     buf = io.BytesIO()
-    result.image.save(buf, format="PNG")
+    result.save(buf, format="PNG")
     return {"status": "ok", "image_base64": base64.b64encode(buf.getvalue()).decode()}
