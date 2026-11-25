@@ -129,8 +129,11 @@ export function ProfileView({ initialTab }: { initialTab?: string }) {
             <div className="grid grid-cols-2 gap-5 md:grid-cols-4">
               {user.tryonHistory.map((h) => (
                 <div key={h.id}>
-                  <img src={`/api/tryon/image/${h.file}`} alt="" loading="lazy" className="showroom aspect-[3/4] w-full rounded-2xl object-contain" />
-                  <p className="mt-2 text-xs text-muted-foreground">{(() => { const gp = getProduct(h.productId); return gp ? loc(gp).name : h.productId; })()} · {date(h.createdAt, lang)}</p>
+                  <img src={`/api/media/${h.file}`} alt="" loading="lazy" className="showroom aspect-[3/4] w-full rounded-2xl object-contain" />
+                  <p className="mt-2 text-xs text-muted-foreground">{(() => {
+                    if (h.garmentId || !h.productId) return user.garments.find((g) => g.id === h.garmentId)?.name ?? t("mc.myGarment");
+                    const gp = getProduct(h.productId); return gp ? loc(gp).name : h.productId;
+                  })()} · {date(h.createdAt, lang)}</p>
                 </div>
               ))}
             </div>

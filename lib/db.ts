@@ -63,13 +63,22 @@ function writeAll(users: Users) {
 }
 
 /* ---------------- public API ---------------- */
+/** Accounts created before poses / own garments existed get empty lists. */
+function normalise(u: UserRecord | undefined): UserRecord | undefined {
+  if (!u) return u;
+  u.poses ??= [];
+  u.garments ??= [];
+  u.tryonHistory ??= [];
+  return u;
+}
+
 export async function getUser(email: string): Promise<UserRecord | undefined> {
   if (!keyFor(email)) return undefined;
   if (USING_REDIS) {
     const raw = await redis<string | null>("GET", userKey(email));
-    return raw ? (JSON.parse(raw) as UserRecord) : undefined;
+    return normalise(raw ? (JSON.parse(raw) as UserRecord) : undefined);
   }
-  return readAll()[keyFor(email)];
+  return normalise(readAll()[keyFor(email)]);
 }
 
 async function putUser(record: UserRecord) {
@@ -116,28 +125,48 @@ export async function renameUser(oldEmail: string, newEmail: string) {
 
 export async function deleteUser(email: string) {
   const u = await getUser(email);
-  for (const entry of u?.tryonHistory ?? []) {
-    if (USING_REDIS) await redis("DEL", imgKey(entry.file)).catch(() => {});
-    else { try { fs.unlinkSync(path.join(TRYON_DIR, path.basename(entry.file))); } catch { /* ignore */ } }
-  }
+  const files = [...(u?.tryonHistory ?? []), ...(u?.poses ?? []), ...(u?.garments ?? [])].map((e) => e.file);
+  for (const file of files) await deleteImage(file);
   if (USING_REDIS) { await redis("DEL", userKey(email)); return; }
   const users = readAll();
   delete users[keyFor(email)];
   writeAll(users);
 }
 
-export async function saveTryonImage(png: Buffer): Promise<string> {
-  const file = `${crypto.randomBytes(8).toString("hex")}.png`;
-  if (USING_REDIS) { await redis("SET", imgKey(file), png.toString("base64")); return file; }
+/* ---------------- images (try-on results, poses, own garments) ---------------- */
+export type ImageExt = "png" | "jpg" | "webp";
+export const IMAGE_TYPES: Record<ImageExt, string> = { png: "image/png", jpg: "image/jpeg", webp: "image/webp" };
+
+/** What the bytes really are (never trust the uploaded file name or type). */
+export function sniffImage(buf: Buffer): ImageExt | null {
+  if (buf.length > 3 && buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff) return "jpg";
+  if (buf.length > 8 && buf.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]))) return "png";
+  if (buf.length > 12 && buf.toString("ascii", 0, 4) === "RIFF" && buf.toString("ascii", 8, 12) === "WEBP") return "webp";
+  return null;
+}
+
+export const imageType = (file: string) => IMAGE_TYPES[(path.extname(file).slice(1) as ImageExt)] ?? "application/octet-stream";
+
+export async function saveImage(buf: Buffer, ext: ImageExt = "jpg"): Promise<string> {
+  const file = `${crypto.randomBytes(8).toString("hex")}.${ext}`;
+  if (USING_REDIS) { await redis("SET", imgKey(file), buf.toString("base64")); return file; }
   ensureDirs();
-  fs.writeFileSync(path.join(TRYON_DIR, file), png);
+  fs.writeFileSync(path.join(TRYON_DIR, file), buf);
   return file;
 }
 
-export async function readTryonImage(file: string): Promise<Buffer | null> {
+export async function readImage(file: string): Promise<Buffer | null> {
   if (USING_REDIS) {
     const raw = await redis<string | null>("GET", imgKey(file)).catch(() => null);
     return raw ? Buffer.from(raw, "base64") : null;
   }
   try { return fs.readFileSync(path.join(TRYON_DIR, path.basename(file))); } catch { return null; }
 }
+
+export async function deleteImage(file: string) {
+  if (USING_REDIS) { await redis("DEL", imgKey(file)).catch(() => {}); return; }
+  try { fs.unlinkSync(path.join(TRYON_DIR, path.basename(file))); } catch { /* ignore */ }
+}
+
+export const saveTryonImage = (png: Buffer) => saveImage(png, "png");
+export const readTryonImage = readImage;

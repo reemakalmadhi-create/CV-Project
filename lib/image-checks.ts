@@ -1,7 +1,7 @@
 /**
  * Person-photo checks in the browser (quality hints, not AI):
  * format, file size, resolution, orientation, lighting, focus (Laplacian variance).
- * Also prepares the model input: the photo fitted onto a 768×1024 canvas (IDM-VTON's input size).
+ * Also prepares the model input: the photo fitted onto a 768×1024 canvas (the try-on input size).
  */
 export type CheckKey = "to.chk.format" | "to.chk.big" | "to.chk.res" | "to.chk.portrait" | "to.chk.light" | "to.chk.focus" | "to.chk.read";
 export interface Check { key: CheckKey; vars?: Record<string, string | number>; ok: boolean; blocking: boolean }
@@ -49,7 +49,7 @@ function stats(img: HTMLImageElement) {
   return { brightness: sum / (w * h), sharpness: n > 1 ? m2 / (n - 1) : 0 };
 }
 
-/** Fit the photo inside 768×1024 on white, centred (same as model/idm_vton/preprocessing.prepare_person). */
+/** Fit the photo inside 768×1024 on white, centred (sent to the try-on service). */
 function prepare(img: HTMLImageElement): string {
   const c = document.createElement("canvas");
   c.width = MODEL_W; c.height = MODEL_H;
@@ -96,4 +96,32 @@ export function dataUrlToBlob(dataUrl: string): Blob {
   const arr = new Uint8Array(bytes.length);
   for (let i = 0; i < bytes.length; i++) arr[i] = bytes.charCodeAt(i);
   return new Blob([arr], { type: mime });
+}
+
+/**
+ * Own garment photos (e.g. saved from a shop website): no person checks, just readable,
+ * not tiny, fitted inside 1024 px on white (transparent PNGs get a white background).
+ */
+export async function prepareGarment(file: File): Promise<{ url: string } | { error: "to.chk.format" | "to.chk.big" | "to.chk.read" | "mc.tooSmall" }> {
+  if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) return { error: "to.chk.format" };
+  if (file.size > MAX_BYTES) return { error: "to.chk.big" };
+  const src = URL.createObjectURL(file);
+  try {
+    const img = await loadImage(src);
+    const { naturalWidth: w, naturalHeight: h } = img;
+    if (w < 160 || h < 160) return { error: "mc.tooSmall" };
+    const s = Math.min(1, 1024 / Math.max(w, h));
+    const c = document.createElement("canvas");
+    c.width = Math.round(w * s); c.height = Math.round(h * s);
+    const ctx = c.getContext("2d")!;
+    ctx.fillStyle = "#fff";
+    ctx.fillRect(0, 0, c.width, c.height);
+    ctx.imageSmoothingQuality = "high";
+    ctx.drawImage(img, 0, 0, c.width, c.height);
+    return { url: c.toDataURL("image/jpeg", 0.92) };
+  } catch {
+    return { error: "to.chk.read" };
+  } finally {
+    URL.revokeObjectURL(src);
+  }
 }

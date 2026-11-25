@@ -4,8 +4,9 @@ The same FITTED store as the Streamlit prototype, rebuilt with **Next.js 15 (App
 React 19, TypeScript and Tailwind v4 (shadcn structure)**, plus a full navigation and motion
 layer: **Framer Motion + GSAP ScrollTrigger + Lenis smooth scrolling**.
 
-IDM-VTON is **not included**. Generating a try-on shows *"IDM-VTON integration pending"*
-until you connect the model. No result is ever faked.
+The try-on model is **CatVTON** (pretrained, ICLR 2025), with its attention layers fine-tuned by
+our team. It runs in the Python service (`tryon-service/`). Without `TRYON_API_URL` the site shows
+*"Try-on model not connected"*. No result is ever faked.
 
 ## Run it
 
@@ -33,7 +34,9 @@ cd tryon-service && pip install -r requirements.txt && uvicorn main:app --port 8
 | `/` Home | Compact "Welcome back, *name*", the **ClothingRailHero** right under it (click a piece → its product page), featured edit, how try-on works |
 | `/closet` | Category pills (sliding active pill), colour chips, search, sort, animated grid re-flow, 3D-tilt cards (View / Try on / ♡) |
 | `/product/[id]` | Drag-to-turn 3D stage (front/back, snaps), required size picker (shakes if missing), size guide, quantity, Try on, Add to bag, favourites, "You may also like" |
-| `/try-on` | Drag & drop upload, photo checks (format, size, resolution, orientation, light, focus), prepared 768×1024 input, garment + category, Generate → Lottie loader → honest pending card; result viewer with before/after slider + download (enabled only for real results) |
+| `/my-closet` | **My closet**: upload your own garment photos (e.g. a hoodie saved from a shop site) with a name + category; rename, delete, Try on. Also **My poses**: save up to 12 photos of yourself |
+| `/try-on` | Pick one or more saved poses + a garment (My closet or Shop tab) → the garment is generated on every chosen pose, one at a time, with progress and a results strip. |
+| `/try-on` (old notes) | Drag & drop upload, photo checks (format, size, resolution, orientation, light, focus), prepared 768×1024 input, garment + category, Generate → Lottie loader → honest pending card; result viewer with before/after slider + download (enabled only for real results) |
 | `/favorites` | View, try on, add to bag (uses your saved size), remove (animated) |
 | `/bag` | Quantity steppers, remove, subtotal, free-delivery progress bar, total, prototype checkout dialog |
 | `/profile` | Avatar, name/email, saved sizes, try-on history, orders, change password, sign out everywhere, delete account (animated tabs) |
@@ -96,3 +99,20 @@ one-time token (like the session token in `lib/auth.ts`), and add a set-new-pass
 - **Arabic / RTL** — switch with the EN | العربية button (navbar, mobile menu, login). Strings live in `lib/i18n.ts`, product translations in `data/catalog.json` (`ar`), the choice in the `fitted_lang` cookie.
 - **Images** — `next/image` (AVIF/WebP, responsive sizes, priority for the first row).
 - **About the model** — public page at `/about` for students. Model details are in `lib/model-info.ts`; change the name there and every page updates.
+
+## Try-on service contract
+
+`POST /api/tryon` (browser → Next.js): multipart `poseId` (or `person` file), `garmentId` (own garment) or
+`productId` (shop), `category`. Next.js forwards to `${TRYON_API_URL}/tryon` as multipart:
+
+| field | value |
+|---|---|
+| `person` | file — the saved pose (JPEG, 768×1024) |
+| `garment` | file — the own garment photo (JPEG, ≤1024 px) or the shop product photo fetched server-side (may be WEBP) |
+| `category` | `upper_body` · `lower_body` · `dresses` |
+| `description` | garment name / product description |
+| `garment_id` | `own:<id>` or the product id |
+
+Reply: `{"status":"ok","image_base64":"…"}` · `{"status":"pending",…}` · `{"status":"error","message":…}`.
+Timeout 240 s (the model runs on a Mac, about a minute per image). Poses, own garments and results are
+stored per user (`.data/tryon/` or Redis) and served only to their owner by `/api/media/[file]`.

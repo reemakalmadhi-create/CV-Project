@@ -19,7 +19,7 @@ export async function POST(req: Request) {
     email: email.trim(),
     password: hashPassword(password),
     createdAt: new Date().toISOString(),
-    avatar: null, favorites: [], cart: [], orders: [], tryonHistory: [],
+    avatar: null, favorites: [], cart: [], orders: [], tryonHistory: [], poses: [], garments: [],
     sizes: { upper_body: null, lower_body: null, dresses: null },
     tokenVersion: 1,
   };

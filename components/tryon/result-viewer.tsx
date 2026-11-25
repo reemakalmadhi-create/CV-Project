@@ -26,7 +26,7 @@ export function CompareSlider({ before, after }: { before: string; after: string
 
 /**
  * Result area. With result=null: an empty frame, a disabled download and "Try another outfit".
- * As soon as the real IDM-VTON output arrives, the same component shows it + before/after.
+ * As soon as the real model output arrives, the same component shows it + before/after.
  */
 export function ResultViewer({ result, before, fileName }: { result: string | null; before: string | null; fileName: string }) {
   const [tab, setTab] = useState<"result" | "compare">("result");

@@ -12,13 +12,15 @@ import { cn } from "@/lib/utils";
 const LINKS = [
   { href: "/", key: "nav.home" },
   { href: "/closet", key: "nav.closet" },
+  { href: "/my-closet", key: "nav.myCloset" },
+  { href: "/try-on", key: "nav.tryonShort" },
   { href: "/profile", key: "nav.profile" },
   { href: "/favorites", key: "nav.favorites" },
 ] as const;
 
 function isActive(pathname: string, href: string) {
   if (href === "/") return pathname === "/";
-  if (href === "/closet") return pathname.startsWith("/closet") || pathname.startsWith("/product");
+  if (href === "/closet") return pathname === "/closet" || pathname.startsWith("/closet/") || pathname.startsWith("/product");
   return pathname.startsWith(href);
 }
 
@@ -89,17 +91,17 @@ export function Navbar() {
           {LINKS.map((l) => {
             const active = isActive(pathname, l.href);
             return (
-              <li key={l.href}>
+              <li key={l.href} className={l.href === "/favorites" ? "hidden lg:block" : undefined}>
                 <Link
                   href={l.href}
                   className={cn(
-                    "relative flex items-center px-3.5 py-2 text-[11.5px] font-semibold uppercase tracking-[0.2em] transition-colors duration-300",
+                    "relative flex items-center whitespace-nowrap px-2 py-2 text-[11px] font-semibold uppercase tracking-[0.16em] transition-colors duration-300 lg:px-3.5 lg:text-[11.5px] lg:tracking-[0.2em]",
                     active ? "text-foreground" : "text-muted-foreground hover:text-foreground",
                   )}
                 >
                   {t(l.key)}
                   {l.href === "/favorites" && <Count n={user.favorites.length} />}
-                  {active && <motion.span layoutId="nav-active" transition={SPRING} className="absolute inset-x-3.5 -bottom-px h-[2px] rounded-full bg-brand" />}
+                  {active && <motion.span layoutId="nav-active" transition={SPRING} className="absolute inset-x-2 -bottom-px h-[2px] rounded-full bg-brand lg:inset-x-3.5" />}
                 </Link>
               </li>
             );
@@ -186,7 +188,7 @@ export function Navbar() {
             className="overflow-hidden border-t border-border bg-background/95 backdrop-blur-xl md:hidden"
           >
             <motion.ul initial="hidden" animate="show" variants={{ show: { transition: { staggerChildren: 0.05 } } }} className="px-5 py-4">
-              {[...LINKS, { href: "/try-on", key: "nav.tryon" } as const, { href: "/about", key: "nav.about" } as const].map((l) => (
+              {[...LINKS, { href: "/about", key: "nav.about" } as const].map((l) => (
                 <motion.li key={l.href} variants={{ hidden: { opacity: 0, x: -10 }, show: { opacity: 1, x: 0 } }}>
                   <Link href={l.href} className={cn("block py-3 text-sm font-semibold uppercase tracking-[0.2em]", isActive(pathname, l.href) ? "text-foreground" : "text-muted-foreground")}>
                     {t(l.key)}

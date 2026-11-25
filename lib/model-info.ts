@@ -1,14 +1,14 @@
 /**
  * Everything the site says about the try-on model lives here.
- * The model isn't final yet: change NAME (and the rest) in this one file and
- * every page — Home, Try-on, About — updates.
+ * Change it in this one file and every page — Home, Try-on, About — updates.
  */
 export const MODEL = {
-  NAME: "IDM-VTON", // provisional
-  FULL_NAME: "Improving Diffusion Models for Authentic Virtual Try-on in the Wild",
-  PAPER_URL: "https://arxiv.org/abs/2403.05139",
-  CODE_URL: "https://github.com/yisol/IDM-VTON",
+  NAME: "CatVTON (fine-tuned by our team)",
+  SHORT_NAME: "CatVTON",
+  FULL_NAME: "CatVTON: Concatenation Is All You Need for Virtual Try-On with Diffusion Models",
+  PAPER_URL: "https://arxiv.org/abs/2407.15886",
+  CODE_URL: "https://huggingface.co/zhengchong/CatVTON",
   INPUT_SIZE: "768 × 1024",
-  AUTHORS: "KAIST & OMNIOUS.AI",
-  VENUE: "ECCV 2024",
+  AUTHORS: "Chong et al.",
+  VENUE: "ICLR 2025",
 };

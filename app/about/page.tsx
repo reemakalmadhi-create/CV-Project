@@ -12,83 +12,91 @@ export const dynamic = "force-dynamic";
 export const metadata = { title: "About the model — FITTED" };
 
 /** Public page for students: what the try-on model is, how it works and how to try it. */
-const COPY = (m: typeof MODEL) => ({
+const COPY = (m: typeof MODEL, connected: boolean) => ({
   en: {
     eyebrow: "About the model",
-    title: `Meet ${m.NAME}.`,
-    lead: `FITTED's virtual try-on is built around ${m.NAME} — "${m.FULL_NAME}" (${m.AUTHORS}, ${m.VENUE}). It is a diffusion model: given a photo of a person and a photo of a garment, it generates a new image of that person wearing that garment, keeping the garment's logo, print and texture.`,
-    note: "The model choice is still provisional — this page will be updated if it changes.",
+    title: `Meet ${m.SHORT_NAME}.`,
+    lead: `FITTED's virtual try-on runs ${m.SHORT_NAME} — "${m.FULL_NAME}" (${m.AUTHORS}, ${m.VENUE}). It is a diffusion model: given a photo of a person and a photo of a garment, it generates a new image of that person wearing that garment, keeping the garment's colour, print and texture.`,
+    note: "We use the authors' pretrained model. Our team then fine-tuned its attention layers on the VITON-HD training photos, using the masks our own pipeline builds.",
     howT: "How it works",
     how: [
-      ["Understand the person", "The photo is analysed to find the body pose (DensePose) and the clothing regions (human parsing). The area to be replaced is masked out."],
-      ["Read the garment twice", "A high-level encoder (an image prompt adapter) captures what the garment is — its style and colour. A second network (GarmentNet, a parallel UNet) keeps the low-level detail — patterns, text and seams."],
-      ["Generate", "A diffusion UNet starts from noise inside the masked area and, step by step, paints the garment onto the person, guided by both garment signals and a detailed text description."],
+      ["Mask the old top", "Your photo is split into body parts (face, hair, arms, clothes). The old top, arms and neck are masked out. Face, hair, hands and trousers are protected."],
+      ["Photo and garment side by side", "The masked photo and the garment photo are stacked into one image. The model's self-attention copies the garment's colour, print and shape into the masked area. No separate warping network or text prompt is needed."],
+      ["Generate", "A Stable Diffusion 1.5 inpainting network removes noise step by step and paints the garment onto you. The original photo is pasted back outside the mask, so your face and background stay the same."],
     ],
     tryT: "Try it — for students",
     tryList: [
-      "Create an account (or log in) and open the Closet.",
-      "Pick any piece and press Try on — the garment comes with you.",
-      "Upload a photo: front-facing, well lit, full or upper body, arms slightly away from the body, plain background.",
-      "FITTED checks the photo (format, size, light, focus) and prepares it at 768 × 1024.",
-      "Press Generate try-on and compare before / after.",
+      "Create an account (or log in).",
+      "Open My closet and upload a garment photo, for example a hoodie you saved from a shop website. Or pick a piece from the shop.",
+      "Add one or more poses: front-facing photos of yourself, well lit, arms a little away from the body, plain background.",
+      "Open Try-on, choose your poses and a garment, and press Generate. Each pose takes about a minute.",
+      "Compare before / after for every pose and download the ones you like.",
     ],
     ioT: "Inputs & outputs",
     io: [
-      ["Person photo", "JPG, PNG or WEBP up to 10 MB, resized to 768 × 1024"],
-      ["Garment", "A product photo from the closet"],
-      ["Category", "Upper body · Lower body · Dresses"],
-      ["Output", "One generated image, 768 × 1024"],
+      ["Pose", `JPG, PNG or WEBP up to 10 MB, prepared at ${m.INPUT_SIZE}`],
+      ["Garment", "A shop piece, or your own garment photo (a plain product photo works best)"],
+      ["Category", "Upper body works best — the model was fine-tuned on tops"],
+      ["Output", "One generated image per pose"],
     ],
     limitsT: "Good to know",
     limits: [
       "Results depend on the photo: crowded backgrounds, crossed arms or strong shadows reduce quality.",
+      "Garment photos with a person wearing them, or with busy backgrounds, work worse than plain product photos.",
+      "A garment much shorter than the top you are wearing, or a raised arm, can come out blurry.",
       "It is an image model — it does not measure your body or predict size. Use the size guide for fit.",
       "Generated images can look real but are synthetic; please don't use other people's photos without consent.",
     ],
-    privacyT: "Your photo",
-    privacy: "Your photo is sent only for the try-on request and is not stored. Only real generated results are saved, to your own try-on history, and you can delete your account at any time.",
+    privacyT: "Your photos",
+    privacy: "Poses and garment photos you upload are saved to your account so you can reuse them. Only you can see them. Delete any of them from My closet, or delete your account to remove everything.",
     statusT: "Status",
-    status: `${m.NAME} integration is pending: the site, the checks and the request pipeline are ready, and the model service will be connected in the next phase. Until then no try-on image is generated — the site never shows a fake result.`,
-    links: "Read more", paper: "Paper (arXiv)", code: "Official code",
+    status: connected
+      ? "The model runs on our own machine (not a cloud GPU), so each try-on takes about a minute and requests wait in line."
+      : "The try-on service is not connected right now, so no try-on image can be generated. The site never shows a fake result.",
+    links: "Read more", paper: "Paper (arXiv)", code: "Model weights",
     cta: "Start trying on", ctaGuest: "Create an account to try",
   },
   ar: {
     eyebrow: "عن الموديل",
-    title: `تعرّف على ${m.NAME}.`,
-    lead: `التجربة الافتراضية في FITTED مبنية على ${m.NAME} — "${m.FULL_NAME}" (${m.AUTHORS}، ${m.VENUE}). هو موديل انتشار (Diffusion): تعطيه صورة شخص وصورة قطعة، ويولّد صورة جديدة للشخص لابس القطعة، مع الحفاظ على الشعار والطبعة والخامة.`,
-    note: "اختيار الموديل للحين مبدئي — بنحدّث هالصفحة لو تغيّر.",
+    title: `تعرّف على ${m.SHORT_NAME}.`,
+    lead: `التجربة الافتراضية في FITTED تشتغل بـ ${m.SHORT_NAME} — "${m.FULL_NAME}" (${m.AUTHORS}، ${m.VENUE}). هو موديل انتشار (Diffusion): تعطيه صورة شخص وصورة قطعة، ويولّد صورة جديدة للشخص لابس القطعة، مع الحفاظ على اللون والطبعة والخامة.`,
+    note: "نستخدم الموديل المدرّب مسبقاً من أصحابه. بعدها فريقنا درّب طبقات الانتباه فيه (Fine-tuning) على صور تدريب VITON-HD، باستخدام الأقنعة اللي يسويها نظامنا.",
     howT: "كيف يشتغل",
     how: [
-      ["يفهم الشخص", "تنحلّل الصورة عشان يعرف وضعية الجسم (DensePose) ومناطق الملابس (Human parsing)، وتنغطّى المنطقة اللي بتتبدّل."],
-      ["يقرأ القطعة مرتين", "مشفّر عالي المستوى (IP-Adapter) يفهم وش القطعة — ستايلها ولونها. وشبكة ثانية (GarmentNet، UNet موازية) تحفظ التفاصيل الدقيقة — النقشات والكتابة والخياطة."],
-      ["يولّد الصورة", "شبكة UNet تبدأ من تشويش داخل المنطقة المغطّاة، وخطوة بخطوة ترسم القطعة على الشخص، بتوجيه من إشارتين القطعة ووصف نصّي مفصّل."],
+      ["يغطّي القطعة القديمة", "تنقسم صورتك لأجزاء الجسم (الوجه، الشعر، اليدين، الملابس). تنغطّى القطعة العلوية القديمة والذراعين والرقبة، ويبقى الوجه والشعر والكفّين والبنطلون مثل ما هي."],
+      ["الصورة والقطعة جنب بعض", "الصورة المغطّاة وصورة القطعة تنحط في صورة وحدة. طبقات الانتباه في الموديل تنقل لون القطعة وطبعتها وشكلها للمنطقة المغطّاة، بدون شبكة تشويه منفصلة وبدون وصف نصّي."],
+      ["يولّد الصورة", "شبكة Stable Diffusion 1.5 للتعبئة تشيل التشويش خطوة بخطوة وترسم القطعة عليك. وبعدها ترجع الصورة الأصلية برّا المنطقة المغطّاة، فوجهك والخلفية يبقون نفسهم."],
     ],
     tryT: "جرّبه — للطلاب",
     tryList: [
-      "أنشئ حساب (أو سجّل دخول) وافتح الخزانة.",
-      "اختر أي قطعة واضغط «جرّبها» — القطعة تنتقل معك.",
-      "ارفع صورة: من الأمام، إضاءتها زينة، كامل الجسم أو نصّه العلوي، اليدين بعيدة شوي عن الجسم، وخلفية سادة.",
-      "FITTED يفحص الصورة (الصيغة، الحجم، الإضاءة، الوضوح) ويجهّزها بمقاس 768 × 1024.",
-      "اضغط «ولّد التجربة» وقارن قبل / بعد.",
+      "أنشئ حساب (أو سجّل دخول).",
+      "افتح «خزانتي» وارفع صورة قطعة، مثلاً هودي حفظت صورته من موقع متجر. أو اختر قطعة من المتجر.",
+      "أضف صورة أو أكثر لك: من الأمام، إضاءتها زينة، اليدين بعيدة شوي عن الجسم، وخلفية سادة.",
+      "افتح «التجربة الافتراضية»، اختر صورك والقطعة، واضغط «ولّد». كل صورة تاخذ تقريباً دقيقة.",
+      "قارن قبل / بعد لكل صورة، ونزّل اللي يعجبك.",
     ],
     ioT: "المدخلات والمخرجات",
     io: [
-      ["صورة الشخص", "JPG أو PNG أو WEBP لين 10 ميجا، تتحوّل لـ 768 × 1024"],
-      ["القطعة", "صورة المنتج من الخزانة"],
-      ["التصنيف", "الجزء العلوي · الجزء السفلي · فساتين"],
-      ["المخرج", "صورة وحدة مولّدة، 768 × 1024"],
+      ["صورتك", `JPG أو PNG أو WEBP لين 10 ميجا، تتجهّز بمقاس ${m.INPUT_SIZE}`],
+      ["القطعة", "قطعة من المتجر، أو صورة قطعتك (صورة المنتج على خلفية سادة أفضل)"],
+      ["التصنيف", "الجزء العلوي أفضل — الموديل متدرّب على القطع العلوية"],
+      ["المخرج", "صورة مولّدة لكل وضعية"],
     ],
     limitsT: "حلو تعرف",
     limits: [
       "النتيجة تعتمد على الصورة: الخلفية الزحمة، أو اليدين المتشابكة، أو الظل القوي تنزّل الجودة.",
+      "صور القطع اللي فيها شخص لابسها أو خلفيتها زحمة تطلع أسوأ من صور المنتج السادة.",
+      "القطعة اللي أقصر بكثير من اللي لابسها، أو اليد المرفوعة، ممكن تطلع مغبّشة.",
       "هو موديل صور — ما يقيس جسمك ولا يتوقّع مقاسك. استخدم دليل المقاسات.",
       "الصور المولّدة ممكن تبان حقيقية بس هي مصطنعة؛ لا تستخدم صور ناس ثانيين بدون إذنهم.",
     ],
-    privacyT: "صورتك",
-    privacy: "صورتك تنرسل بس لطلب التجربة وما تنحفظ. النتائج الحقيقية المولّدة بس هي اللي تنحفظ في سجل تجاربك، وتقدر تحذف حسابك أي وقت.",
+    privacyT: "صورك",
+    privacy: "الصور والقطع اللي ترفعها تنحفظ في حسابك عشان تستخدمها مرة ثانية، وما يشوفها غيرك. تقدر تحذف أي وحدة من «خزانتي»، أو تحذف حسابك وينشال كل شي.",
     statusT: "الحالة",
-    status: `ربط ${m.NAME} للحين قيد التجهيز: الموقع والفحوصات ومسار الطلب جاهزين، والموديل بينربط في المرحلة الجاية. لين ذاك الوقت ما تتولّد أي صورة — والموقع ما يعرض نتيجة مزيّفة أبد.`,
-    links: "اقرأ أكثر", paper: "الورقة العلمية (arXiv)", code: "الكود الرسمي",
+    status: connected
+      ? "الموديل يشتغل على جهازنا (مو سيرفر GPU)، فكل تجربة تاخذ تقريباً دقيقة والطلبات تنتظر دورها."
+      : "خدمة التجربة مو متصلة الحين، فما نقدر نولّد صور. والموقع ما يعرض نتيجة مزيّفة أبد.",
+    links: "اقرأ أكثر", paper: "الورقة العلمية (arXiv)", code: "أوزان الموديل",
     cta: "ابدأ التجربة", ctaGuest: "أنشئ حساب وجرّب",
   },
 });
@@ -100,8 +108,8 @@ function Card({ children, className = "" }: { children: React.ReactNode; classNa
 export default async function AboutPage() {
   const lang: Lang = await getLang();
   const user = await currentUser();
-  const c = COPY(MODEL)[lang];
   const connected = Boolean(process.env.TRYON_API_URL);
+  const c = COPY(MODEL, connected)[lang];
 
   return (
     <>
@@ -122,7 +130,7 @@ export default async function AboutPage() {
           <p className="eyebrow">{c.eyebrow}</p>
           <h1 className="display mt-3 text-[clamp(2.2rem,5vw,4rem)]"><span className="text-brand">{c.title}</span></h1>
           <p className="mt-6 max-w-3xl text-[15.5px] leading-relaxed text-muted-foreground">{c.lead}</p>
-          <p className="mt-3 text-xs text-amber-700">{c.note}</p>
+          <p className="mt-3 max-w-3xl text-sm text-muted-foreground">{c.note}</p>
           <ModelStatus connected={connected} model={MODEL.NAME} />
         </section>
 

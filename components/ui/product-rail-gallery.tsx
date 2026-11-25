@@ -35,7 +35,7 @@ export interface ClothingRailHeroLabels {
   show: string;
 }
 
-export interface ClothingRailHeroProps extends React.ComponentProps<"section"> {
+export interface ClothingRailHeroProps extends Omit<React.ComponentProps<"section">, "onSelect"> {
   items: RailGarment[];
   eyebrow?: string;
   heading?: string;
