@@ -1,0 +1,31 @@
+{
+ "photos (same 60 for all)": 60,
+ "our v4 SSIM / LPIPS / PSNR": [
+  0.831,
+  0.163,
+  21.0
+ ],
+ "CatVTON original SSIM / LPIPS / PSNR": [
+  0.856,
+  0.104,
+  21.37
+ ],
+ "CatVTON fine-tuned SSIM / LPIPS / PSNR": [
+  0.876,
+  0.081,
+  22.89
+ ],
+ "fine-tuned better LPIPS on": "88%",
+ "weights": "attention_final.safetensors (446 MB, not in git)",
+ "second check: 73 more test photos (first 73 in name order), our v4 SSIM / LPIPS / PSNR": [
+  0.838,
+  0.162,
+  20.78
+ ],
+ "second check: 73 more test photos, CatVTON fine-tuned SSIM / LPIPS / PSNR": [
+  0.889,
+  0.074,
+  22.89
+ ],
+ "second check: fine-tuned better LPIPS than v4 on": "97%"
+}
