@@ -31,6 +31,10 @@ Same 60 test photos:
 | CatVTON original | 0.856 | 0.104 | 21.37 |
 | CatVTON fine-tuned by us | 0.876 | 0.081 | 22.89 |
 
+Second check on 73 other test photos: v4 0.838 / 0.162 / 20.78, fine-tuned 0.889 / 0.074 / 22.89
+(better than v4 on 97%). The full 2,032-photo run was stopped at 73; `cat_scores_full.py` resumes it.
+Result images: `fitted-app/tryon-service/results/`.
+
 Fine-tuned weights: see the repo's Releases page (`attention_final.safetensors`, 446 MB).
 
 ## Earlier Colab notebooks
