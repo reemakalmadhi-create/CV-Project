@@ -12,6 +12,26 @@ FastAPI app that runs our try-on model. The Next.js site calls it through `TRYON
   are removed, and the garment is cropped to its own box.
 - **License:** CatVTON weights and code are CC BY-NC-SA 4.0 (non-commercial).
 
+## Results
+
+Same 60 VITON-HD test photos for every model, 25 steps, scored at 256x192.
+
+| Model | SSIM ↑ | LPIPS ↓ | PSNR ↑ |
+|---|---|---|---|
+| Our v4 (own model, no diffusion) | 0.831 | 0.163 | 21.0 |
+| CatVTON original weights | 0.856 | 0.104 | 21.37 |
+| **CatVTON fine-tuned by us** | **0.876** | **0.081** | **22.89** |
+
+The fine-tuned model has a lower LPIPS on 88% of the photos.
+Fine-tune: self-attention layers only (49.6M of 860M weights), 625 steps x 4 photos
+(2,500 train photos), lr 1e-5, 512x384, about 4.5 h on a MacBook Air M4.
+Test photos were never used for training. Numbers are in `results/scores_ft.json`.
+
+![Before vs after our fine-tune](results/catvton_finetune_before_after.png)
+
+In the grid the original weights leave a ghost outline (row 2) and cut a long-sleeve top short (row 4).
+The fine-tuned weights fix both. The weights file is 446 MB, so it is not in git.
+
 ## Files
 
 | File | What it does |
