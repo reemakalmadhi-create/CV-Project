@@ -1,6 +1,6 @@
 "use client";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
-import { Heart, Info, LogOut, Menu, Settings, ShoppingBag, Sparkles, X } from "lucide-react";
+import { Heart, Info, Menu, Settings, ShoppingBag, Sparkles, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -44,7 +44,7 @@ function Count({ n }: { n: number }) {
 
 export function Navbar() {
   const pathname = usePathname();
-  const { user, cartCount, logout } = useUser();
+  const { user, cartCount } = useUser();
   const { t } = useI18n();
   const [hidden, setHidden] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -163,11 +163,6 @@ export function Navbar() {
                       <span className="transition-transform duration-300 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5">{label}</span>
                     </Link>
                   ))}
-                  <div className="my-1 h-px bg-border" />
-                  <button onClick={logout} className="group flex w-full items-center gap-3 px-3 py-2.5 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">
-                    <LogOut className="size-4" strokeWidth={1.8} />
-                    <span className="transition-transform duration-300 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5">{t("nav.logout")}</span>
-                  </button>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -195,9 +190,6 @@ export function Navbar() {
                   </Link>
                 </motion.li>
               ))}
-              <motion.li variants={{ hidden: { opacity: 0, x: -10 }, show: { opacity: 1, x: 0 } }}>
-                <button onClick={logout} className="py-3 text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground">{t("nav.logout")}</button>
-              </motion.li>
               <motion.li variants={{ hidden: { opacity: 0, x: -10 }, show: { opacity: 1, x: 0 } }} className="pt-2"><LangToggle /></motion.li>
             </motion.ul>
           </motion.div>
