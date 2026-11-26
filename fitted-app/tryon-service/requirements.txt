@@ -1,0 +1,14 @@
+# Service
+fastapi>=0.110
+uvicorn[standard]>=0.29
+python-multipart>=0.0.9
+pillow>=10.0
+numpy>=1.26
+opencv-python>=4.8
+# Model (CatVTON). Keep these pins: newer diffusers pulls huggingface_hub 2.x, which breaks transformers 4.56.
+torch>=2.4
+diffusers>=0.32,<0.36
+transformers>=4.44,<4.57
+huggingface_hub>=0.34,<1.0
+accelerate>=1.0
+safetensors

@@ -1,0 +1,442 @@
+[
+  {
+    "id": "bone-tee",
+    "name": "Heavyweight tee · Bone",
+    "kind": "tee",
+    "color": "#EFEBE2",
+    "tag": "SAR 180",
+    "description": "240 gsm organic cotton with a tonal DHxWHY embroidery on the chest.",
+    "details": [
+      "240 gsm",
+      "Regular fit",
+      "Tonal embroidery"
+    ],
+    "image": "https://cdn.21st.dev/assets/mirror/14/1485bf44725b18fcdba71bfae54d67d648ab3bff4b24215a042c0cc4c895a2e6.webp",
+    "backImage": "https://cdn.21st.dev/assets/mirror/69/69937e656430ae33d950303e0d53051273e5b02189750ef1e7429ec4bbf95e20.webp",
+    "sideImage": "https://cdn.21st.dev/assets/mirror/83/838468c32f16b4acba62e4601276737411156052444712ff2534fefe994a7bed.webp",
+    "price_sar": 180,
+    "category": "T-Shirts",
+    "tryon_category": "upper_body",
+    "colors": [
+      {
+        "name": "Bone",
+        "hex": "#EFEBE2"
+      }
+    ],
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "ar": {
+      "name": "تيشيرت ثقيل · عظمي",
+      "description": "قطن عضوي 240 غرام مع تطريز DHxWHY بنفس اللون على الصدر.",
+      "details": [
+        "240 غرام",
+        "قصّة عادية",
+        "تطريز بنفس اللون"
+      ],
+      "category": "تيشيرتات",
+      "color": "عظمي"
+    }
+  },
+  {
+    "id": "cc-graphic",
+    "name": "Graphic tee · CCgather",
+    "kind": "tee",
+    "color": "#101214",
+    "tag": "SAR 195",
+    "description": "Black tee with the CCgather wordmark printed front and back.",
+    "details": [
+      "240 gsm",
+      "Regular fit",
+      "Screen print"
+    ],
+    "image": "https://cdn.21st.dev/assets/mirror/d7/d769f183472d0fd98a7aff2a643593748cd36ef9da1497d9bf6f0d87d1025a9b.webp",
+    "backImage": "https://cdn.21st.dev/assets/mirror/fe/fec6f7e96b198cc5b9aad333ca2c4c10968a746d87f6dc11d9c118607b509058.webp",
+    "sideImage": "https://cdn.21st.dev/assets/mirror/b3/b3b6984ea94b8b8cd19fb15387e89dca457ac0f947115c2a54a33217e4fb4571.webp",
+    "price_sar": 195,
+    "category": "T-Shirts",
+    "tryon_category": "upper_body",
+    "colors": [
+      {
+        "name": "Black",
+        "hex": "#101214"
+      }
+    ],
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "ar": {
+      "name": "تيشيرت مطبوع · CCgather",
+      "description": "تيشيرت أسود مطبوع عليه شعار CCgather من الأمام والخلف.",
+      "details": [
+        "240 غرام",
+        "قصّة عادية",
+        "طباعة سلك سكرين"
+      ],
+      "category": "تيشيرتات",
+      "color": "أسود"
+    }
+  },
+  {
+    "id": "oxford-sky",
+    "name": "Oxford shirt · Sky",
+    "kind": "shirt",
+    "color": "#A3D3EB",
+    "tag": "SAR 280",
+    "description": "Pale sky oxford with a button-down collar and a tiny Maestiq embroidery.",
+    "details": [
+      "Oxford cotton",
+      "Button-down collar",
+      "Chest pocket"
+    ],
+    "image": "https://cdn.21st.dev/assets/mirror/47/470a7723cef068f81e8a4c09d1ab3f8630c61b734c2168b10f3858e45efbf31f.webp",
+    "backImage": "https://cdn.21st.dev/assets/mirror/9b/9be14e5dce879756775677e2d82dadc2ad9a1690b7df2f82de360cb3600d0ee5.webp",
+    "sideImage": "https://cdn.21st.dev/assets/mirror/59/5984d5ca60fd1aeee7e688ec33c2219a1c537fcde90d2accab813c13985f8632.webp",
+    "price_sar": 280,
+    "category": "Shirts",
+    "tryon_category": "upper_body",
+    "colors": [
+      {
+        "name": "Sky",
+        "hex": "#A3D3EB"
+      }
+    ],
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "ar": {
+      "name": "قميص أكسفورد · سماوي",
+      "description": "قميص أكسفورد سماوي فاتح بياقة بأزرار وتطريز Maestiq صغير.",
+      "details": [
+        "قطن أكسفورد",
+        "ياقة بأزرار",
+        "جيب على الصدر"
+      ],
+      "category": "قمصان",
+      "color": "سماوي"
+    }
+  },
+  {
+    "id": "cardigan-olive",
+    "name": "Knit cardigan · Olive",
+    "kind": "knit",
+    "color": "#758151",
+    "tag": "SAR 360",
+    "description": "Chunky olive wool cardigan with wooden buttons and ribbed trims.",
+    "details": [
+      "Lambswool",
+      "Wooden buttons",
+      "V-neck"
+    ],
+    "image": "https://cdn.21st.dev/assets/mirror/58/581b13c5ca241c653dc94d2c8048c92a60f022cfbaaf153261076d3a6655827e.webp",
+    "backImage": "https://cdn.21st.dev/assets/mirror/d9/d9178d906d37268565cf10af3431aee543aacfc73610f7fa7b0fa4758c498cb3.webp",
+    "sideImage": "https://cdn.21st.dev/assets/mirror/de/dee1c529600e0460413f1a9b07a29bedb7ea7dc96181fce5d9d6501231e6e45d.webp",
+    "price_sar": 360,
+    "category": "Knitwear",
+    "tryon_category": "upper_body",
+    "colors": [
+      {
+        "name": "Olive",
+        "hex": "#758151"
+      }
+    ],
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "ar": {
+      "name": "كارديقن صوف · زيتي",
+      "description": "كارديقن صوف زيتي سميك بأزرار خشبية وحواف مضلّعة.",
+      "details": [
+        "صوف حَمَل",
+        "أزرار خشبية",
+        "رقبة V"
+      ],
+      "category": "تريكو",
+      "color": "زيتي"
+    }
+  },
+  {
+    "id": "hoodie-heather",
+    "name": "Hoodie · Maestiq",
+    "kind": "hoodie",
+    "color": "#A0A5AB",
+    "tag": "SAR 330",
+    "description": "Heather fleece hoodie with the Maestiq wordmark across the chest.",
+    "details": [
+      "400 gsm fleece",
+      "Kangaroo pocket",
+      "Chest print"
+    ],
+    "image": "https://cdn.21st.dev/assets/mirror/51/51750ba098dd622df46695bca781b3f0ec336a36b93b070e638cc04455def6d6.webp",
+    "backImage": "https://cdn.21st.dev/assets/mirror/e7/e75c4ac8fb7f14caae756338a31f81f1437bb312b78e0d7d906e9f956e7968fa.webp",
+    "sideImage": "https://cdn.21st.dev/assets/mirror/a2/a2eb2463d52146c341ede6bb9f6067e917a23eb29b7b1d1d4c40ac084a01c7ce.webp",
+    "price_sar": 330,
+    "category": "Hoodies & Sweats",
+    "tryon_category": "upper_body",
+    "colors": [
+      {
+        "name": "Heather grey",
+        "hex": "#A0A5AB"
+      }
+    ],
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "ar": {
+      "name": "هودي · Maestiq",
+      "description": "هودي فليس رمادي مع شعار Maestiq على الصدر.",
+      "details": [
+        "فليس 400 غرام",
+        "جيب كنغر",
+        "طباعة على الصدر"
+      ],
+      "category": "هوديز وسويتشيرت",
+      "color": "رمادي"
+    }
+  },
+  {
+    "id": "sweat-lilac",
+    "name": "Crewneck sweatshirt · Lilac",
+    "kind": "knit",
+    "color": "#CCB2E0",
+    "tag": "SAR 295",
+    "description": "Muted lilac fleece crewneck with a raised DHxWHY puff print.",
+    "details": [
+      "400 gsm fleece",
+      "Ribbed trims",
+      "Puff print"
+    ],
+    "image": "https://cdn.21st.dev/assets/mirror/8e/8e38660e2add9637c27846d9b8d620f2abb228a5a153ccfd7b1c808b6845e1f8.webp",
+    "backImage": "https://cdn.21st.dev/assets/mirror/b9/b9214a6e009ce4b3044595a51ea010c299135bab5b26775c43d7175c86e77898.webp",
+    "sideImage": "https://cdn.21st.dev/assets/mirror/59/591872e42b483c43c1cd08a3ac4d7d40c0b5fa2bc585a36096faded2e696e84e.webp",
+    "price_sar": 295,
+    "category": "Hoodies & Sweats",
+    "tryon_category": "upper_body",
+    "colors": [
+      {
+        "name": "Lilac",
+        "hex": "#CCB2E0"
+      }
+    ],
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "ar": {
+      "name": "سويتشيرت · ليلكي",
+      "description": "سويتشيرت فليس ليلكي هادئ بطباعة DHxWHY بارزة.",
+      "details": [
+        "فليس 400 غرام",
+        "حواف مضلّعة",
+        "طباعة بارزة"
+      ],
+      "category": "هوديز وسويتشيرت",
+      "color": "ليلكي"
+    }
+  },
+  {
+    "id": "polo-forest",
+    "name": "Piqué polo · Forest",
+    "kind": "tee",
+    "color": "#185B37",
+    "tag": "SAR 235",
+    "description": "Forest piqué polo with a bone CCgather embroidery on the chest.",
+    "details": [
+      "Piqué knit",
+      "Two-button placket",
+      "Embroidered"
+    ],
+    "image": "https://cdn.21st.dev/assets/mirror/19/19fe43cb681195ae227e3164088d86a07a1b6e33cc54c6e35637374736a16894.webp",
+    "backImage": "https://cdn.21st.dev/assets/mirror/e0/e095182b1a7f04e600c5662aa871b4c055c294b152586817d84e312c22f744cf.webp",
+    "sideImage": "https://cdn.21st.dev/assets/mirror/00/005a8e10be234bc40917f3153208b8196ba1610c53c987e39942da1f4a7cd808.webp",
+    "price_sar": 235,
+    "category": "Polos",
+    "tryon_category": "upper_body",
+    "colors": [
+      {
+        "name": "Forest",
+        "hex": "#185B37"
+      }
+    ],
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "ar": {
+      "name": "بولو بيكيه · أخضر غامق",
+      "description": "بولو بيكيه أخضر غامق مع تطريز CCgather عظمي على الصدر.",
+      "details": [
+        "قماش بيكيه",
+        "زرّين",
+        "مطرّز"
+      ],
+      "category": "بولو",
+      "color": "أخضر غامق"
+    }
+  },
+  {
+    "id": "henley-brick",
+    "name": "Henley · Brick",
+    "kind": "knit",
+    "color": "#B05139",
+    "tag": "SAR 210",
+    "description": "Dusty brick henley with a three-button placket, worn in from day one.",
+    "details": [
+      "Slub cotton",
+      "Three buttons",
+      "Long sleeve"
+    ],
+    "image": "https://cdn.21st.dev/assets/mirror/84/84aa4b0e21ed11fcbc083647a607b94ee3a6c21cb66c114cfb1dad0792c15499.webp",
+    "backImage": "https://cdn.21st.dev/assets/mirror/01/01c299df56a29afca8dad4a64858bd506667338bfbd0435118e6c3698c7881b3.webp",
+    "sideImage": "https://cdn.21st.dev/assets/mirror/9c/9ca38eeb156aae7d199d3c1ffb7947e395f77d1f094eea006c1b5fbb22352b4e.webp",
+    "price_sar": 210,
+    "category": "Knitwear",
+    "tryon_category": "upper_body",
+    "colors": [
+      {
+        "name": "Brick",
+        "hex": "#B05139"
+      }
+    ],
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "ar": {
+      "name": "هنلي · طوبي",
+      "description": "هنلي بلون الطوب الهادئ بثلاث أزرار، ملمسه مريح من أول لبسة.",
+      "details": [
+        "قطن سلب",
+        "ثلاث أزرار",
+        "كم طويل"
+      ],
+      "category": "تريكو",
+      "color": "طوبي"
+    }
+  },
+  {
+    "id": "breton",
+    "name": "Breton long sleeve",
+    "kind": "knit",
+    "color": "#E4DFD3",
+    "tag": "SAR 220",
+    "description": "Classic ink-and-bone Breton stripe with a boat neck.",
+    "details": [
+      "220 gsm",
+      "Boat neck",
+      "Long sleeve"
+    ],
+    "image": "https://cdn.21st.dev/assets/mirror/09/096002a95aba7de9c197de4cb5c78cbbe17c1677b19c547cc20c6dbef47a899c.webp",
+    "backImage": "https://cdn.21st.dev/assets/mirror/74/74408a7dbb4f4fc6761ebb8d6ed93187248cddf75e1c2e70d38d04dfdd328776.webp",
+    "sideImage": "https://cdn.21st.dev/assets/mirror/ed/eda3afca537071a80d7d82b3f0d1055b56f1f3263c20772224bae6660bf4072c.webp",
+    "price_sar": 220,
+    "category": "Knitwear",
+    "tryon_category": "upper_body",
+    "colors": [
+      {
+        "name": "Ink & bone",
+        "hex": "#E4DFD3"
+      }
+    ],
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "ar": {
+      "name": "بريتون كم طويل",
+      "description": "مخطط بريتون كلاسيكي كحلي وعظمي برقبة واسعة.",
+      "details": [
+        "220 غرام",
+        "رقبة واسعة",
+        "كم طويل"
+      ],
+      "category": "تريكو",
+      "color": "كحلي وعظمي"
+    }
+  },
+  {
+    "id": "oversized-ochre",
+    "name": "Oversized tee · CCgather",
+    "kind": "tee",
+    "color": "#DE9C31",
+    "tag": "SAR 195",
+    "description": "Boxy ochre tee with a small chest mark and a large CCgather back print.",
+    "details": [
+      "Oversized",
+      "Dropped shoulder",
+      "Back print"
+    ],
+    "image": "https://cdn.21st.dev/assets/mirror/72/7208c811f54e123dd7b1a5c1c3926f43ca832f6c4c20c45de10671ffd544409d.webp",
+    "backImage": "https://cdn.21st.dev/assets/mirror/d3/d356989b7bc741c5cfc934cac34983dfb24d5d6a6b6e7b8b7f6b27cd3eceae69.webp",
+    "sideImage": "https://cdn.21st.dev/assets/mirror/bf/bf94beeafb21f9cb21aa45057a67dc8a2e23ba95c7ac0f79dd27ba3ce4a1230c.webp",
+    "price_sar": 195,
+    "category": "T-Shirts",
+    "tryon_category": "upper_body",
+    "colors": [
+      {
+        "name": "Ochre",
+        "hex": "#DE9C31"
+      }
+    ],
+    "sizes": [
+      "XS",
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "ar": {
+      "name": "تيشيرت أوفر سايز · CCgather",
+      "description": "تيشيرت واسع بلون الأوكر بشعار صغير على الصدر وطباعة CCgather كبيرة على الظهر.",
+      "details": [
+        "أوفر سايز",
+        "كتف نازل",
+        "طباعة على الظهر"
+      ],
+      "category": "تيشيرتات",
+      "color": "أوكر"
+    }
+  }
+]

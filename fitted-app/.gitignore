@@ -1,0 +1,14 @@
+node_modules/
+.next/
+out/
+.data/
+.env
+.env.local
+*.tsbuildinfo
+next-env.d.ts
+__pycache__/
+tryon-service/idm_vton_placeholder/idm_vton/weights/*
+tryon-service/idm_vton_placeholder/idm_vton/ckpt/*
+tryon-service/idm_vton_placeholder/idm_vton/vendor/*
+!tryon-service/idm_vton_placeholder/idm_vton/*/.gitkeep
+__pycache__/
