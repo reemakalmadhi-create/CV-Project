@@ -6,7 +6,7 @@ notebook is applied: hull of old top + arms, minus face, hair, hands, trousers, 
 Hands are found without a pose model: the arm pixels farthest from the torso.
 
 Env:
-  CATVTON_LIB_DIR   folder with catvton_lib.py            (default ~/virtual-tryon)
+  CATVTON_LIB_DIR   folder with catvton_lib.py            (default: this folder)
   CATVTON_VERSION   vitonhd (512x384) | mix (1024x768)     (default vitonhd)
   CATVTON_ATTN      our fine-tuned attention .safetensors  (optional)
   CATVTON_STEPS     DDIM steps                             (default 25)
@@ -19,7 +19,7 @@ import threading
 import time
 
 os.environ.setdefault("USE_TF", "0")
-sys.path.insert(0, os.path.expanduser(os.environ.get("CATVTON_LIB_DIR", "~/virtual-tryon")))
+sys.path.insert(0, os.path.expanduser(os.environ.get("CATVTON_LIB_DIR", os.path.dirname(os.path.abspath(__file__)))))
 from catvton_lib import (  # noqa: E402  (env must be set first)
     COAT, DRESS, FACE, GLASSES, GLOVE, HAIR, HAT, LARM, LLEG, LSHOE, PANTS, RARM, RLEG, RSHOE, SCARF, SKIRT, SOCKS, TOP,
     load_pipe, resize_and_crop, resize_and_padding,
