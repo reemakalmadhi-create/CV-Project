@@ -16,7 +16,7 @@ cp .env.example .env.local      # set SESSION_SECRET to any long random string
 npm run dev                     # http://localhost:3000
 ```
 
-No login: each visitor gets a private guest account automatically (`/api/auth/guest`, 30-day cookie). Data is saved in `./.data/` (JSON files).
+No login: each visitor gets a private guest account automatically (`/api/auth/guest`, 30-day cookie). Set `DEMO_EMAIL` to an account whose poses and closet every new guest starts with. Data is saved in `./.data/` (JSON files).
 
 Optional: the Python try-on service (`tryon-service/`, see its README):
 

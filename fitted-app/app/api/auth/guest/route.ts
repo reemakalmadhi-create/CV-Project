@@ -1,7 +1,7 @@
 import crypto from "node:crypto";
 import { NextResponse } from "next/server";
 import { cookieOptions, createSessionToken, hashPassword, SESSION_COOKIE } from "@/lib/auth";
-import { createUser } from "@/lib/db";
+import { createUser, getUser, readImage, saveImage, sniffImage } from "@/lib/db";
 import type { UserRecord } from "@/lib/types";
 
 /**
@@ -22,10 +22,31 @@ export async function GET(req: Request) {
     sizes: { upper_body: null, lower_body: null, dresses: null },
     tokenVersion: 1,
   };
+  await copyDemoItems(user);
   await createUser(user);
   const { token, maxAge } = createSessionToken(user, true);
   // relative Location so it works on localhost and behind the public tunnel
   const res = new NextResponse(null, { status: 303, headers: { Location: safeNext } });
   res.cookies.set(SESSION_COOKIE, token, cookieOptions(maxAge));
   return res;
+}
+
+/** Start every guest with the demo account's poses and closet (own copies, so deleting one is safe). */
+async function copyDemoItems(user: UserRecord) {
+  const demoEmail = process.env.DEMO_EMAIL;
+  const demo = demoEmail ? await getUser(demoEmail) : undefined;
+  if (!demo) return;
+  const copy = async (file: string) => {
+    const buf = await readImage(file);
+    const ext = buf && sniffImage(buf);
+    return buf && ext ? saveImage(buf, ext) : null;
+  };
+  for (const p of demo.poses) {
+    const file = await copy(p.file);
+    if (file) user.poses.push({ ...p, file });
+  }
+  for (const g of demo.garments) {
+    const file = await copy(g.file);
+    if (file) user.garments.push({ ...g, file });
+  }
 }
