@@ -69,7 +69,8 @@ export async function currentUser(): Promise<UserRecord | null> {
 export const cookieOptions = (maxAge?: number) => ({
   httpOnly: true,
   sameSite: "lax" as const,
-  secure: process.env.NODE_ENV === "production",
+  // Safari drops Secure cookies on http://localhost; the public link is https-only anyway.
+  secure: process.env.COOKIE_SECURE === "1",
   path: "/",
   ...(maxAge ? { maxAge } : {}),
 });

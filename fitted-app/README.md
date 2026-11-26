@@ -16,7 +16,7 @@ cp .env.example .env.local      # set SESSION_SECRET to any long random string
 npm run dev                     # http://localhost:3000
 ```
 
-Create an account on `/signup`. Data is saved in `./.data/` (JSON files).
+No login: each visitor gets a private guest account automatically (`/api/auth/guest`, 30-day cookie). Set `DEMO_EMAIL` to an account whose poses and closet every new guest starts with. Data is saved in `./.data/` (JSON files).
 
 Optional: the Python try-on service (`tryon-service/`, see its README):
 
@@ -30,7 +30,7 @@ cd tryon-service && pip install -r requirements.txt && uvicorn main:app --port 8
 | Route | What's there |
 |---|---|
 | splash | Fitting-room curtain: FITTED writes in, then the curtain draws open. Once per visit; never flashes (decided before first paint) |
-| `/login`, `/signup` | Centered card, show/hide password, remember me (30-day cookie), forgot-password dialog, live password rules |
+| `/login`, `/signup` | Not used in the demo (they lead into the site). Centered card, show/hide password, remember me (30-day cookie), forgot-password dialog, live password rules |
 | `/` Home | Compact "Welcome back, *name*", the **ClothingRailHero** right under it (click a piece → its product page), featured edit, how try-on works |
 | `/closet` | Category pills (sliding active pill), colour chips, search, sort, animated grid re-flow, 3D-tilt cards (View / Try on / ♡) |
 | `/product/[id]` | Drag-to-turn 3D stage (front/back, snaps), required size picker (shakes if missing), size guide, quantity, Try on, Add to bag, favourites, "You may also like" |
@@ -68,7 +68,7 @@ components/
 lib/  catalog, db (JSON store), auth (PBKDF2 + signed cookie), shop, image-checks, gsap, motion
 data/catalog.json       10 pieces, prices in SAR
 tryon-service/          Python FastAPI + model/idm_vton (placeholders)
-middleware.ts           redirects signed-out visitors to /login
+middleware.ts           gives new visitors a guest account (no login screen)
 ```
 
 ## Deploy to Vercel
