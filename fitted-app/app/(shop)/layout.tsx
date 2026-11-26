@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 
 export default async function ShopLayout({ children }: { children: React.ReactNode }) {
   const user = await currentUser();
-  if (!user) redirect("/login");
+  if (!user) redirect("/api/auth/guest?next=/");
   const lang = await getLang();
   return (
     <UserProvider initialUser={toPublic(user)}>

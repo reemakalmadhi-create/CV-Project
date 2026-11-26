@@ -14,6 +14,6 @@ case "$1" in
   web)
     npm run build && exec npm run start -- -p 3000 ;;
   tunnel)
-    exec cloudflared tunnel --no-autoupdate --url http://localhost:3000 ;;
+    exec cloudflared tunnel --no-autoupdate --protocol http2 --url http://localhost:3000 ;;
   *) echo "usage: $0 model|web|tunnel" ;;
 esac
