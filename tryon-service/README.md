@@ -29,8 +29,7 @@ Test photos were never used for training. Numbers are in `results/scores_ft.json
 
 ![Before vs after our fine-tune](results/catvton_finetune_before_after.png)
 
-In the grid the original weights leave a ghost outline (row 2) and cut a long-sleeve top short (row 4).
-The fine-tuned weights fix both.
+On these long-sleeve tops the two look close; the scores above show the gain across many photos.
 
 Second check on 73 other test photos (first 73 in name order):
 
@@ -42,11 +41,11 @@ Second check on 73 other test photos (first 73 in name order):
 The fine-tuned model is better than v4 on 97% of them.
 A run on all 2,032 test photos was stopped at 73; `notebooks/scripts/cat_scores_full.py` (repo root) resumes it.
 
-Each person wearing a different shirt (test photos the model never saw):
+Each person wearing a different top (test photos the model never saw):
 
 ![New shirts](results/new_shirts.png)
 
-Same shirt as the real photo, next to the real photo (best to worst):
+Same top as in the real photo, next to the real photo (best to worst):
 
 ![Test photos vs real](results/test_photos_vs_real.png)
 
